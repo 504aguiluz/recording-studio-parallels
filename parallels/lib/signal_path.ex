@@ -4,7 +4,7 @@ defmodule SignalPath do
     # in decibles
     @amount = 40,
     # some map of tuples {:frequency, :gain}
-    @eq_changes = {{60, 2}, {315, -4}, {2500, -2}, {12_000, 1}...},
+    @eq_changes = {{60, 2}, {315, -4}, {2500, -2}, {12_000, 1}},
     # in decibles
     @threshold = 35,
     # numerator
@@ -12,7 +12,7 @@ defmodule SignalPath do
     # in milliseconds
     @delay_time = 225,
     # in decibles
-    @feedback = 5,
+    @feedback = 5
 
 
   def create_signal_path(%AudioSignal{} = audio_signal) do
