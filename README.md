@@ -127,11 +127,11 @@ def pre_amplifier(%{signal_type: "mic"} = audio_signal, amount) do
 
 ## Equalizer
 
-     Audio signals carry a dense amount of information. They are a combination of frequencies and amplitudes. Frequency refers to pitch (or how high or low something sounds). To complicate things, audio signals don't just have one pitch, but a broad frequency profile across a spectrum which is usually measured from 20hz to 20,000hz (the estimated range of human hearing). 
+       Audio signals carry a dense amount of information. They are a combination of frequencies and amplitudes. Frequency refers to pitch (or how high or low something sounds). To complicate things, audio signals don't just have one pitch, but a broad frequency profile across a spectrum which is usually measured from 20hz to 20,000hz (the estimated range of human hearing). 
 
-    Each frequency in this entire range has an amplitude (or the volume), which is the depth at which the frequency vibrates. So essentially, we have a long list of data index points [{:frequency, :gain}] to make up the frequency profile. 
+       Each frequency in this entire range has an amplitude (or the volume), which is the depth at which the frequency vibrates. So essentially, we have a long list of data index points [{:frequency, :gain}] to make up the frequency profile. 
 
-    Equalization is the manipulation of this frequency profile to make things sound more pleasing. For example, if a trumpet sounds too harsh or bright, an engineer might lower the gain of some of the higher frequencies to make a "softer" sound.
+       Equalization is the manipulation of this frequency profile to make things sound more pleasing. For example, if a trumpet sounds too harsh or bright, an engineer might lower the gain of some of the higher frequencies to make a "softer" sound.
 
 ```elixir
 def equaliser(audio_signal, eq_changes) do
@@ -145,13 +145,13 @@ def equaliser(audio_signal, eq_changes) do
 
 ## Compression
 
-     While equalization manipulates frequency (the time between recurring wavelength peaks, aka pitch), compression deals with the amplitude (the difference between a wavelength's peak and trough, aka volume). Compression controls the dynamic range of amplitude, making sounds have a more consistent volume level. 
+       While equalization manipulates frequency (the time between recurring wavelength peaks, aka pitch), compression deals with the amplitude (the difference between a wavelength's peak and trough, aka volume). Compression controls the dynamic range of amplitude, making sounds have a more consistent volume level. 
 
-    Compressors work by having a gain threshold level measured in decibels. If the input gain of the audio signal exceeds the threshold level, the gain which exceeds the threshold is reduced by a set ratio. 
+       Compressors work by having a gain threshold level measured in decibels. If the input gain of the audio signal exceeds the threshold level, the gain which exceeds the threshold is reduced by a set ratio. 
 
-    For example, if we have an input gain of 60dB, a threshold set to 50dB and a ratio set to 2:1, our output gain would be 55dB. This is because the 10dB difference between the input gain and threshold is reduced by half and allowed to pass with the remaining gain beneath the threshold. 
+       For example, if we have an input gain of 60dB, a threshold set to 50dB and a ratio set to 2:1, our output gain would be 55dB. This is because the 10dB difference between the input gain and threshold is reduced by half and allowed to pass with the remaining gain beneath the threshold. 
 
-    Compressors typically also allow us to control the attack and release times that engage audio signals, as well as other fun things like side-chain compression (which does cool things like engage specific frequencies while ignoring others or feed an entirely separate audio signal to compress the volume of a different signal). But while outside the scope of explanation for this article, parallels to other programming concepts can be considered, such as conditional logic, pattern matching, asynchronous logic, etc.
+       Compressors typically also allow us to control the attack and release times that engage audio signals, as well as other fun things like side-chain compression (which does cool things like engage specific frequencies while ignoring others or feed an entirely separate audio signal to compress the volume of a different signal). But while outside the scope of explanation for this article, parallels to other programming concepts can be considered, such as conditional logic, pattern matching, asynchronous logic, etc.
 
 ```elixir
 def compressor(audio_signal, threshold, ratio) 
@@ -169,9 +169,9 @@ def compressor(audio_signal, threshold, ratio)
 
 ## Echo
 
-     Echo is a fairly easy concept for most people to comprehend and is recursive in its programmatic implementation. We pass an audio signal, then after a given amount of time, feed the same quieter signal back to its input to repeat the process until the gain is reduced to 0dB. 
+       Echo is a fairly easy concept for most people to comprehend and is recursive in its programmatic implementation. We pass an audio signal, then after a given amount of time, feed the same quieter signal back to its input to repeat the process until the gain is reduced to 0dB. 
 
-    Often times recording engineers send this as a parallel signal to an echo fx unit and feed the echoed signal back in further down the signal path. For the sake of brevity in this example, let's assume that echo()/3 is sending the echoed signal to a separate output while send_to_echo()/3 is also passing the "dry" signal through the original path.
+       Often times recording engineers send this as a parallel signal to an echo fx unit and feed the echoed signal back in further down the signal path. For the sake of brevity in this example, let's assume that echo()/3 is sending the echoed signal to a separate output while send_to_echo()/3 is also passing the "dry" signal through the original path.
 
 ```elixir
 def send_to_echo(audio_signal, delay_time, feedback) do
@@ -195,9 +195,9 @@ end
 
 ## Recording Audio
 
-     There are many different mediums for recording and not enough time to really dig in to the nuts and bolts of this concept. In short, analog signals can be recorded to mediums such as magnetic tape or vinyl. They can also be converted to digital binary signals to be stored on a hard drive or further manipulated in a digital audio workspace (DAW) like ProTools or Ableton Live.
+       There are many different mediums for recording and not enough time to really dig in to the nuts and bolts of this concept. In short, analog signals can be recorded to mediums such as magnetic tape or vinyl. They can also be converted to digital binary signals to be stored on a hard drive or further manipulated in a digital audio workspace (DAW) like ProTools or Ableton Live.
 
-    For this example, let's just say we are converting the analog signal to digital so we can record to a DAW.
+       For this example, let's just say we are converting the analog signal to digital so we can record to a DAW.
 
 ```elixir
 def record_audio(audio_signal) do
@@ -209,7 +209,7 @@ def record_audio(audio_signal) do
 
 ## Playback
 
-     We can record audio all day, but if no one ever hears it, what's the point? We need to play back these recorded audio signals by converting them from digital back to analog (if they are in a DAW). Then we need to amplify that analog signal through speakers, thus vibrating air molecules again to return an acoustic sound, which then travels into our ears and through a matrix of tissue, bones, hair, fluid, and nerves to create electrical impulses for our brains to interpret.
+       We can record audio all day, but if no one ever hears it, what's the point? We need to play back these recorded audio signals by converting them from digital back to analog (if they are in a DAW). Then we need to amplify that analog signal through speakers, thus vibrating air molecules again to return an acoustic sound, which then travels into our ears and through a matrix of tissue, bones, hair, fluid, and nerves to create electrical impulses for our brains to interpret.
 
 ```elixir
 def playback(%{signal: "digital"} = audio_signal) do
@@ -228,6 +228,6 @@ def playback(%{signal: "digital"} = audio_signal) do
 
 ## In Closing
 
-     There are a lot of other parallels to find between programming and recording if we want to dig deeper. One that comes to mind is the pipe operator in Elixir. It is essentially like a normalized patch bay, connecting inputs and outputs without having to explicitly pass its return value as the next argument. Similarly when patch bays are normalized, we don't even have to use patch cables if the channels are thoughtfully laid out. 
+       There are a lot of other parallels to find between programming and recording if we want to dig deeper. One that comes to mind is the pipe operator in Elixir. It is essentially like a normalized patch bay, connecting inputs and outputs without having to explicitly pass its return value as the next argument. Similarly when patch bays are normalized, we don't even have to use patch cables if the channels are thoughtfully laid out. 
 
-    My point with all of this is not just that the simple concept of signal flow is ubiquitous in the world, but more so that learning how to program can teach us to see this repeated pattern in its ubiquity. From a high level perspective, this kind of analogous thought is helpful to understand basic or even intermediately complex concepts more quickly. But admittedly, as we dig deeper through the lower level logic of these types of comparisons, we often inevitably find more discrepancy and dissonance in our analogies. I think this is kind of a driver for a lot of programmers, though. It is the pursuit to find and better understand the discrepancy and the dissonance, so we can play with it, modify it, learn to solve problems with it, and in the end transform ourselves to become better at both creating and fixing things in our surrounding world.
+       My point with all of this is not just that the simple concept of signal flow is ubiquitous in the world, but more so that learning how to program can teach us to see this repeated pattern in its ubiquity. From a high level perspective, this kind of analogous thought is helpful to understand basic or even intermediately complex concepts more quickly. But admittedly, as we dig deeper through the lower level logic of these types of comparisons, we often inevitably find more discrepancy and dissonance in our analogies. I think this is kind of a driver for a lot of programmers, though. It is the pursuit to find and better understand the discrepancy and the dissonance, so we can play with it, modify it, learn to solve problems with it, and in the end transform ourselves to become better at both creating and fixing things in our surrounding world.
