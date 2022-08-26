@@ -1,15 +1,25 @@
 defmodule AudioSignals do
-  def microphone(%AudioSignal{amplification_level: "none"} = audio_signal) do
+  # alias AudioSignal.AudioSignal
+
+  def microphone(%AudioSignal{signal: "acoustic"} = audio_signal) do
     convert_to_analog(audio_signal)
 
     Map.put(
       audio_signal,
-      :amplification_level,
+      :signal,
       "mic"
     )
   end
 
-  def pre_amplifier(%{amplification_level: "mic"} = audio_signal, amount) do
+  def amplify(audio_signal, amount) do
+    Map.put(
+      audio_signal,
+      :gain,
+      :gain + amount
+    )
+  end
+
+  def pre_amplifier(%{signal: "mic"} = audio_signal, amount) do
     amplify.(audio_signal, mic_to_line_level(amount))
   end
 
@@ -22,7 +32,7 @@ defmodule AudioSignals do
   end
 
   def compressor(%{gain: gain} = audio_signal, threshold, ratio) when gain > threshold do
-    threshold_diff = audio_signal.gain - threshold
+    threshold_diff = :gain - threshold
     compressed_diff = threshold_diff / ratio
 
     Map.put(
@@ -34,9 +44,10 @@ defmodule AudioSignals do
 
   def send_to_echo(audio_signal, delay_time, feedback) do
     echo(audio_signal, delay_time, feedback)
+    audio_signal
   end
 
-  def echo(%{gain: gain} = audio_signal, delay_time, feedback) when audio_signal.gain > 0 do
+  def echo(%{gain: _gain} = audio_signal, delay_time, feedback) when :gain > 0 do
     wet_audio_signal =
       Map.put(
         audio_signal,
@@ -49,18 +60,22 @@ defmodule AudioSignals do
     echo(wet_audio_signal, delay_time, feedback)
   end
 
-  def amplify(%{gain: gain} = audio_signal, amount) do
-    audio_signal =
-      Map.put(
-        audio_signal,
-        :gain,
-        :gain + amount
-      )
-  end
-
-  def capture_audio(audio_signal) do
+  def record_audio(audio_signal) do
     audio_signal
     |> convert_to_digital()
-    |> record_audio_signal()
+    |> save_to_drive()
+  end
+
+  def playback(%{signal: "digital"} = audio_signal) do
+    audio_signal
+    |> convert_to_analog()
+    |> amplify()
+    |> play_through_speakers()
+  end
+
+  def playback(%{signal: "analog"} = audio_signal) do
+    audio_signal
+    |> amplify()
+    |> play_through_speakers()
   end
 end
